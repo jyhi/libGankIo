@@ -14,12 +14,7 @@
 
 // Enable Unicode
 // Comment these lines to disable Unicode.
-#ifndef UNICODE
-#define UNICODE
-#endif
-#ifndef _UNICODE
-#define _UNICODE
-#endif
+
 #include <tchar.h>
 
 // Forward declaration
@@ -29,7 +24,8 @@ int _tmain (int argc, _TCHAR **argv)
 {
     char *buffer = malloc (40960);
     // CURLcode ret;
-    json_object *json = NULL;
+    json_object *jReceived = NULL;
+    json_object *jResArray   = NULL;
 
     // _tprintf (_T("Gank.io Fetcher Version %s\nCopyright (C) 2016 Junde Yi\n\n"), _T(VERSION));
 
@@ -54,20 +50,25 @@ int _tmain (int argc, _TCHAR **argv)
         return 1;
     } // if (curl)
 
-    // puts (buffer);
-
     // 2st step: parse JSON
-    if ((json = json_tokener_parse (buffer)) && (json != NULL)) {
-        json_object_object_foreach (json, key, val) {
-            printf ("%s :=> %s\n", key, json_object_to_json_string (val));
+    jReceived = json_tokener_parse (buffer);
+    if (jReceived != NULL) {
+        int ret = json_object_object_get_ex (jReceived, "results", &jResArray);
+        if ((ret == TRUE) && (json_object_is_type (jResArray, json_type_array) == TRUE)) {
+            json_object *jResult = json_object_array_get_idx (jResArray, 0); // jResult is finally a type_json_object
+            json_object_object_foreach (jResult, key, val) {
+                printf ("%s => %s\n", key, json_object_to_json_string (val));
+            }
+        } else {
+            _fputts (_T("[ERROR] Cannot get jResArray."), stderr);
+            free (buffer);
+            return 1;
         }
     } else {
-        _fputts (_T("[ERROR] JSON parsing error. Abort."), stderr);
+        _fputts (_T("[ERROR]Cannot get jReceived."), stderr);
         free (buffer);
-        curl_easy_cleanup (curl);
         return 1;
     }
-
 
     free (buffer);
     return 0;
@@ -75,6 +76,9 @@ int _tmain (int argc, _TCHAR **argv)
 
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata)
 {
-    strcat (userdata, ptr);
+    size_t realSize = size*nmemb;
+    if (ptr) {
+        memcpy ((char *)userdata, ptr, realSize);
+    }
     return (size*nmemb);
 }
