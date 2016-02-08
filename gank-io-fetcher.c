@@ -29,6 +29,7 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata);
 void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHAR *dataType,
                       uint32_t *nRequest, uint32_t *page,
                       uint32_t *year, uint32_t *month, uint32_t *day);
+void show_help (void);
 
 int _tmain (int argc, _TCHAR **argv)
 {
@@ -133,13 +134,15 @@ void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHA
         {"page",     required_argument, &optFlag, 'p'},
         {"year",     required_argument, &optFlag, 'y'},
         {"month",    required_argument, &optFlag, 'm'},
-        {"day",      required_argument, &optFlag, 'd'}
+        {"day",      required_argument, &optFlag, 'd'},
+        {"help",     no_argument, &optFlag, 'h'},
+        {"usage",    no_argument,       &optFlag, 'u'}
     };
 
     // FIXME: *argc and the following many `optarg`s will be wchat_t types if Unicode is enabled,
     //        but getopt_long and wcsicmp won't receive them.
     //        (iconv? (Oh I think applying Unicode is a wrong decision))
-    while (getopt_long (*argc, *argv, "rtnpymd", options, NULL) != -1) {
+    while (getopt_long (*argc, *argv, "rtnpymdhu", options, NULL) != -1) {
         switch (optFlag) {
             case 'r': // type (分类数据/每日数据/随机数据)
                 if (_tcsicmp (optarg, _T("Sorted")) == 0) {
@@ -192,6 +195,11 @@ void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHA
             case 'd': // Day
                 *day = _tcstoul (optarg, NULL, 10);
                 break;
+            case 'h': // help
+                // fall through
+            case 'u': // usage
+                show_help ();
+                exit (0);
             default:  // ???
                 break;
         } // switch (optFlag)
@@ -248,4 +256,23 @@ void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHA
         _fputts (_T("[ERROR] Please set resource type..."), stderr);
         exit (2);
     }
+}
+
+void show_help (void)
+{
+    _putts (
+        "Usage: gank-io-fetcher [Options]\n"
+        "Options:\n"
+        "  -r, --restype=             Specify Resource Type:\n"
+        "  -d, --datatype=            Specify Data Type\n"
+        "  -n, --number=              Specify the number of things you want to get\n"
+        "  -p, --page=                Specify the page, depending on the number you get\n"
+        "  -y, --year=                Specify year\n"
+        "  -m, --month=               Specify month\n"
+        "  -d, --day=                 Specify day\n"
+        "  -h, --help\n"
+        "      --usage                Show this help\n"
+        "\n"
+        "Report bugs to https://github.com/lmy441900/gank.io.fetcher/issues\n"
+    );
 }
