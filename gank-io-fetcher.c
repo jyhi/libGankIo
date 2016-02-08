@@ -53,14 +53,24 @@ int _tmain (int argc, _TCHAR **argv)
     // 2st step: parse JSON
     jReceived = json_tokener_parse (buffer);
     if (jReceived != NULL) {
-        int ret = json_object_object_get_ex (jReceived, "results", &jResArray);
-        if ((ret == TRUE) && (json_object_is_type (jResArray, json_type_array) == TRUE)) {
-            json_object *jResult = json_object_array_get_idx (jResArray, 0); // jResult is finally a type_json_object
-            json_object_object_foreach (jResult, key, val) {
-                printf ("%s => %s\n", key, json_object_to_json_string (val));
+        int ret = 0;
+        json_object *jError = NULL;
+
+        ret = json_object_object_get_ex (jReceived, "error", &jError);
+        if ((ret == TRUE) && (strcmp (json_object_to_json_string (jError), "false") == 0)) {
+            ret = json_object_object_get_ex (jReceived, "results", &jResArray);
+            if ((ret == TRUE) && (json_object_is_type (jResArray, json_type_array) == TRUE)) {
+                json_object *jResult = json_object_array_get_idx (jResArray, 0); // jResult is finally a type_json_object
+                json_object_object_foreach (jResult, key, val) {
+                    printf ("%s => %s\n", key, json_object_to_json_string (val));
+                }
+            } else {
+                _fputts (_T("[ERROR] Cannot get jResArray."), stderr);
+                free (buffer);
+                return 1;
             }
         } else {
-            _fputts (_T("[ERROR] Cannot get jResArray."), stderr);
+            _fputts (_T("[ERROR] Server responds an error. Abort."), stderr);
             free (buffer);
             return 1;
         }
