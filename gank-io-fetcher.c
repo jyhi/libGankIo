@@ -54,7 +54,7 @@ int _tmain (int argc, _TCHAR **argv)
     // 1st step: cURL get JSON
     if (curl) {
         // Setup cURL
-        curl_easy_setopt (curl, CURLOPT_VERBOSE, 1L);
+        // curl_easy_setopt (curl, CURLOPT_VERBOSE, 1L);
         if (resType == Sorted) {
             _sntprintf (site, SITE_LENGTH, _T("http://gank.avosapps.com/api/data/%s/%d/%d"),
                         dataType, nRequest, page);
