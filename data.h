@@ -10,13 +10,13 @@ enum Type {
     Random
 };
 
-enum DataType {
-    NotSet,
-    Goods,
-    Android,
-    iOS,
-    RelaxingMovies,
-    ExpandingRes,
-    FrontEnd,
-    All
-};
+// enum DataType {
+//     NotSet,
+//     Goods,
+//     Android,
+//     iOS,
+//     RelaxingMovies,
+//     ExpandingRes,
+//     FrontEnd,
+//     All
+// };

@@ -18,23 +18,29 @@
 // FIXME: Wait for my finishing the coordination with ANSI functions...
 
 #include <tchar.h>
-
 #include "data.h"
+
+#define DATATYPE_LENGTH 16
+#define SITE_LENGTH     4096
+#define BUFFER_LENGTH   40960
+
 // Forward declaration
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata);
-void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, enum DataType *dataType,
+void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHAR *dataType,
                       uint32_t *nRequest, uint32_t *page,
                       uint32_t *year, uint32_t *month, uint32_t *day);
 
 int _tmain (int argc, _TCHAR **argv)
 {
-    static char buffer[40960] = {0};  // Buffer for the data received. FIXME: Flexible capacity
+    static char   buffer[BUFFER_LENGTH]     = {0};  // Buffer for the data received. FIXME: Flexible capacity
+    static _TCHAR site[SITE_LENGTH]         = {0};
+    static _TCHAR dataType[DATATYPE_LENGTH] = {0};
     uint32_t nRequest = 0;
     uint32_t page     = 0;
     uint32_t year = 0, month = 0, day = 0;
     json_object *jReceived = NULL;
     json_object *jResArray = NULL;
-    enum DataType dataType = NotSet;
+    // enum DataType dataType = NotSet;
     enum Type     resType  = TNotSet;
 
     // Parse arguments
@@ -49,7 +55,17 @@ int _tmain (int argc, _TCHAR **argv)
     if (curl) {
         // Setup cURL
         curl_easy_setopt (curl, CURLOPT_VERBOSE, 1L);
-        curl_easy_setopt (curl, CURLOPT_URL, "http://gank.avosapps.com/api/data/%E7%A6%8F%E5%88%A9/1/1");
+        if (resType == Sorted) {
+            _sntprintf (site, SITE_LENGTH, _T("http://gank.avosapps.com/api/data/%s/%d/%d"),
+                        dataType, nRequest, page);
+        } else if (resType == Daily) {
+            _sntprintf (site, SITE_LENGTH, _T("http://gank.avosapps.com/api/day/%d/%d/%d"),
+                        year, month, day);
+        } else if (resType == Random) {
+            _sntprintf (site, SITE_LENGTH, _T("http://gank.avosapps.com/api/random/data/%s/%d"),
+                        dataType, nRequest);
+        } else {}
+        curl_easy_setopt (curl, CURLOPT_URL, site);
         curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, write_callback);
         curl_easy_setopt (curl, CURLOPT_WRITEDATA, buffer);
 
@@ -102,7 +118,7 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata)
     return (size*nmemb);
 }
 
-void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, enum DataType *dataType,
+void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHAR *dataType,
                       uint32_t *nRequest, uint32_t *page,
                       uint32_t *year, uint32_t *month, uint32_t *day)
 {
@@ -138,19 +154,19 @@ void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, enum 
 
             case 't': // Data Type (福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all)
                 if (_tcsicmp (optarg, _T("Goods")) == 0) {
-                    *dataType = Goods;
+                    _tcsncpy (dataType, _T("福利"), DATATYPE_LENGTH);
                 } else if (_tcsicmp (optarg, _T("Android")) == 0) {
-                    *dataType = Android;
+                    _tcsncpy (dataType, _T("Android"), DATATYPE_LENGTH);
                 } else if (_tcsicmp (optarg, _T("iOS")) == 0) {
-                    *dataType = iOS;
+                    _tcsncpy (dataType, _T("iOS"), DATATYPE_LENGTH);
                 } else if (_tcsicmp (optarg, _T("RelaxingMovies")) == 0) {
-                    *dataType = RelaxingMovies;
+                    _tcsncpy (dataType, _T("休息视频"), DATATYPE_LENGTH);
                 } else if (_tcsicmp (optarg, _T("ExpandingRes")) == 0) {
-                    *dataType = ExpandingRes;
+                    _tcsncpy (dataType, _T("拓展资源"), DATATYPE_LENGTH);
                 } else if (_tcsicmp (optarg, _T("FrontEnd")) == 0) {
-                    *dataType = FrontEnd;
+                    _tcsncpy (dataType, _T("前端"), DATATYPE_LENGTH);
                 } else if (_tcsicmp (optarg, _T("all")) == 0) {
-                    *dataType = All;
+                    _tcsncpy (dataType, _T("all"), DATATYPE_LENGTH);
                 } else {
                     // Nothing matches
                     _fputts (_T("[ERROR] You've set a wrong type of data."), stderr);
