@@ -44,7 +44,7 @@ int _tmain (int argc, _TCHAR **argv)
     enum Type     resType  = TNotSet;
 
     // Parse arguments
-    parse_arguments (&argc, &argv, &resType, &dataType,
+    parse_arguments (&argc, &argv, &resType, dataType,
                      &nRequest, &page,
                      &year, &month, &day);
 
@@ -196,7 +196,7 @@ void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHA
 
     // Check if variables are set.
     if (*resType == Sorted) {
-        if (*dataType != NotSet) {
+        if (*dataType != '\0') {
             if (*nRequest != 0) {
                 if (*page != 0) {
                     return;
@@ -230,7 +230,7 @@ void parse_arguments (const int *argc, _TCHAR ***argv, enum Type *resType, _TCHA
             exit (2);
         }
     } else if (*resType == Random) {
-        if (*dataType != NotSet) {
+        if (*dataType != '\0') {
             if (*nRequest != 0) {
                 return;
             } else {
