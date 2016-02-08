@@ -89,9 +89,11 @@ int _tmain (int argc, _TCHAR **argv)
         if ((ret == TRUE) && (strcmp (json_object_to_json_string (jError), "false") == 0)) {
             ret = json_object_object_get_ex (jReceived, "results", &jResArray);
             if ((ret == TRUE) && (json_object_is_type (jResArray, json_type_array) == TRUE)) {
-                json_object *jResult = json_object_array_get_idx (jResArray, 0); // jResult is finally a type_json_object
-                json_object_object_foreach (jResult, key, val) {
-                    printf ("%s => %s\n", key, json_object_to_json_string (val));
+                for (int i = 0; i < json_object_array_length (jResArray); i++) {
+                    json_object *jResult = json_object_array_get_idx (jResArray, 0); // jResult is finally a type_json_object
+                    json_object_object_foreach (jResult, key, val) {
+                        printf ("%s => %s\n", key, json_object_to_json_string (val));
+                    }
                 }
             } else {
                 _fputts (_T("[ERROR] Cannot get jResArray."), stderr);
@@ -112,8 +114,9 @@ int _tmain (int argc, _TCHAR **argv)
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata)
 {
     size_t realSize = size*nmemb;
+    char   *tmp     = ((char *)userdata)+strlen (userdata);
     if (ptr) {
-        memcpy ((char *)userdata, ptr, realSize);
+        memcpy ((char *)tmp, ptr, realSize);
     }
     return (size*nmemb);
 }
