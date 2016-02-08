@@ -22,7 +22,7 @@ Please refer to [Gank.io APIs](http://gank.io/api) for details.
 
 ## License
 
-This program is licensed under [DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE Version 2](http://www.wtfpl.net/txt/copying/).
+This program is licensed under [DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE Version 2](http://www.wtfpl.net/txt/copying/). See [LICENSE](LICENSE).
 
 You just DO WHAT THE FUCK YOU WANT TO, as you please.
 
