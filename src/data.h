@@ -23,7 +23,7 @@ enum GankIoResourceType {
     Android,
     Ios,
     RelaxingMovies,
-    ExpandingRes,
+    ExtendRes,
     Frontend,
     All,
 };
@@ -51,9 +51,9 @@ struct _GankIoDailyFeed {
     GankIoItem *movToday;
     GankIoItem *android;
     GankIoItem *iOS;
-    GankIoItem *expandingRes;
+    GankIoItem *extendRes;
     GankIoItem *frontEnd;
-    
+
     int nPicToday;
     int nMovToday;
     int nAndroid;
@@ -62,4 +62,3 @@ struct _GankIoDailyFeed {
     int nFrontEnd;
 }
 typedef struct _GankIoDailyFeed GankIoDailyFeed
-
