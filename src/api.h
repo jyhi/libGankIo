@@ -16,9 +16,13 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* _gank_io_api_url_form: Generate the RESTFul API according to the arguments
+/* _gank_io_api_daily_url_form: Generate the RESTFul API according to the daily arguments
  */
-int _gank_io_api_url_form ();
+int _gank_io_api_daily_url_form ();
+
+/* _gank_io_api_sorted_url_form: Generate the RESTFul API according to the sorted arguments
+ */
+int _gank_io_api_sorted_url_form ();
 
 /* _gank_io_apt_get: Perform network connection to fetch JSON from gank.io
  */
