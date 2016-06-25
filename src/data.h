@@ -37,12 +37,12 @@ struct _GankIoItem {
     char   *desc;                    // Description of the item
     char   *publishedAt;             // Item publish time
     char   *source;                  // Indicates where the item comes from
-    struct GankIoResourceType *type; // Resource type of this item
+    enum   GankIoResourceType *type; // Resource type of this item
     char   *url;                     // URL
     int    used;                     // Indicates if it is used (?)
     char   *who;                     // The man who published this item
 };
-typedef struct _GankIoItem GankIoItem
+typedef struct _GankIoItem GankIoItem;
 
 /* GankIoDailyFeed: All-in-one daily feed containing several sections of the day
  */
@@ -60,5 +60,5 @@ struct _GankIoDailyFeed {
     int nIos;
     int nExpandingRes;
     int nFrontEnd;
-}
-typedef struct _GankIoDailyFeed GankIoDailyFeed
+};
+typedef struct _GankIoDailyFeed GankIoDailyFeed;
