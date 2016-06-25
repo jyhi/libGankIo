@@ -58,7 +58,7 @@ struct _GankIoDailyFeed {
     int nMovToday;
     int nAndroid;
     int nIos;
-    int nExpandingRes;
+    int nExtendRes;
     int nFrontEnd;
 };
 typedef struct _GankIoDailyFeed GankIoDailyFeed;
