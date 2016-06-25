@@ -38,4 +38,10 @@ void *gank_io_xmalloc (const size_t size);
 
 /* gank_io_output: print messages in different types.
  */
-void gank_io_output (FILE *stream, enum GankIoOutputType, char *fmt, ...);
+void gank_io_output (enum GankIoOutputType, char *fmt, ...);
+
+#define gank_io_info(...) gank_io_output (Info, ##__VA_ARGS__)
+#define gank_io_warn_noack(...) gank_io_output (Warn_NoAck, ##__VA_ARGS__)
+#define gank_io_warn_ack(...) gank_io_output (Warn_Ack, ##__VA_ARGS__)
+#define gank_io_warn(...) gank_io_warn_ack (...)
+#define gank_io_error(...) gank_io_output (Error, ##__VA_ARGS__)

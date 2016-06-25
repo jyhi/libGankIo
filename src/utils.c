@@ -27,7 +27,7 @@ void *gank_io_xmalloc (const size_t size)
     }
 }
 
-void gank_io_output (FILE *stream, enum GankIoOutputType, char *fmt, ...)
+void gank_io_output (enum GankIoOutputType, char *fmt, ...)
 {
     va_list args;
     static const char *head = " ** libGankIo:";
