@@ -32,7 +32,7 @@ int _gank_io_api_daily_url_form (char **url, unsigned int year, unsigned int mon
         return EXIT_SUCCESS;
     } else {
         // Overflowed. (It seems impossible)
-        gank_io_error ("%s:%d String overflowed!");
+        gank_io_error ("%s:%d String overflowed!", __FILE__, __LINE__);
     }
 
     // Whatever.
