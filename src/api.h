@@ -16,6 +16,8 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "data.h"
+
 #ifndef _GANK_IO_API_H
 #define _GANK_IO_API_H
 
@@ -25,7 +27,7 @@ int _gank_io_api_daily_url_form (char **url, unsigned int year, unsigned int mon
 
 /* _gank_io_api_sorted_url_form: Generate the RESTFul API according to the sorted arguments
  */
-int _gank_io_api_sorted_url_form (char **url, unsigned int nRequest, unsigned int nPage);
+int _gank_io_api_sorted_url_form (char **url, GankIoResType resType, unsigned int nRequest, unsigned int nPage);
 
 /* _gank_io_apt_get: Perform network connection to fetch JSON from gank.io
  */
