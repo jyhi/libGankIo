@@ -16,6 +16,9 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _GANK_IO_DATA_H
+#define _GANK_IO_DATA_H
+
 /* GankIoResourceType: Indicates the resource type of the item.
  */
 enum GankIoResourceType {
@@ -62,3 +65,5 @@ struct _GankIoDailyFeed {
     int nFrontEnd;
 };
 typedef struct _GankIoDailyFeed GankIoDailyFeed;
+
+#endif /* end of include guard: _GANK_IO_DATA_H */

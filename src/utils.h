@@ -16,6 +16,10 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#ifndef _GANK_IO_UTILS_H
+#define _GANK_IO_UTILS_H
+
 /* GankIoOutputType: type of messages for gank_io_output */
 enum GankIoOutputType {
     Info = 0,
@@ -45,3 +49,5 @@ void gank_io_output (enum GankIoOutputType, char *fmt, ...);
 #define gank_io_warn_ack(...) gank_io_output (Warn_Ack, ##__VA_ARGS__)
 #define gank_io_warn(...) gank_io_warn_ack (...)
 #define gank_io_error(...) gank_io_output (Error, ##__VA_ARGS__)
+
+#endif /* end of include guard: _GANK_IO_UTILS_H */

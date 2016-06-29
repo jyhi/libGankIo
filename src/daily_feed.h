@@ -16,6 +16,9 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _GANK_IO_DAILY_FEED_H
+#define _GANK_IO_DAILY_FEED_H
+
 /* gank_io_daily_feed_info_fetch: Fetch daily feed of the specific date.
  * NOTE: This function fetches only information returned as JSON.
  */
@@ -30,3 +33,5 @@ int gank_io_daily_feed_content_fetch ();
  * NOTE: If the item is already NULL, this function does nothing.
  */
 int gank_io_daily_feed_free ();
+
+#endif /* end of include guard: _GANK_IO_DAILY_FEED_H */

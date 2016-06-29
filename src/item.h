@@ -16,6 +16,9 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _GANK_IO_ITEM_H
+#define _GANK_IO_ITEM_H
+
 /* gank_io_item_info_fetch: Fetch items of specific numbers, and write information into the specific 'GankIoItem' items.
  * NOTE: Unlike gank_io_item_content_fetch, this function only fetches summaries.
  */
@@ -30,3 +33,5 @@ int gank_io_item_content_fetch ();
  * NOTE: If the item is already NULL, this function does nothing.
  */
 int gank_io_item_free ();
+
+#endif /* end of include guard: _GANK_IO_ITEM_H */
