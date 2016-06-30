@@ -77,10 +77,13 @@ int _gank_io_api_sorted_url_form (char **url, GankIoResType resType, unsigned in
     retVal = snprintf (BUFFER_SIZE, "%s/%s/%d/%d", BaseUrl, strResType, nRequest, nPage);
     if (retVal <= BUFFER_SIZE) {
         *url = buf;
-        return;
+        return EXIT_SUCCESS;
     } else {
         gank_io_error ("%s:%d String overflowed!", __FILE__, __LINE__);
     }
+
+    // Whatever.
+    return EXIT_FAILURE;
 }
 
 
