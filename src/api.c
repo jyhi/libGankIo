@@ -16,6 +16,11 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <curl/curl.h>
+#include "data.h"
 #include "utils.h"
 #define BUFFER_SIZE 4096
 
@@ -43,10 +48,10 @@ int _gank_io_api_daily_url_form (char **url, unsigned int year, unsigned int mon
 
 
 
-int _gank_io_api_sorted_url_form (char **url, GankIoResType resType, unsigned int nRequest, unsigned int nPage)
+int _gank_io_api_sorted_url_form (char **url, enum GankIoResourceType resType, unsigned int nRequest, unsigned int nPage)
 {
     char *buf = gank_io_xmalloc (BUFFER_SIZE);
-    char strResType = gank_io_xmalloc (BUFFER_SIZE);
+    char *strResType = gank_io_xmalloc (BUFFER_SIZE);
     int retVal = 0;
 
     switch (resType) {
@@ -74,7 +79,7 @@ int _gank_io_api_sorted_url_form (char **url, GankIoResType resType, unsigned in
             break;
     }
 
-    retVal = snprintf (BUFFER_SIZE, "%s/%s/%d/%d", BaseUrl, strResType, nRequest, nPage);
+    retVal = snprintf (buf, BUFFER_SIZE, "%s/%s/%d/%d", BaseUrl, strResType, nRequest, nPage);
     if (retVal <= BUFFER_SIZE) {
         *url = buf;
         return EXIT_SUCCESS;
