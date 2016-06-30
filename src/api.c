@@ -87,7 +87,7 @@ int _gank_io_api_sorted_url_form (char **url, GankIoResType resType, unsigned in
 
 
 
-int _gank_io_api_get (const char *url, char **json)
+int _gank_io_api_get (char **json, const char *url)
 {
 
 }

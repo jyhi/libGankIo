@@ -31,10 +31,10 @@ int _gank_io_api_sorted_url_form (char **url, GankIoResType resType, unsigned in
 
 /* _gank_io_apt_get: Perform network connection to fetch JSON from gank.io
  */
-int _gank_io_api_get (const char *url, char **json);
+int _gank_io_api_get (char **json, const char *url);
 
 /* _gank_io_api_parse: Parse JSON to convert it into inner data structures
  */
-int _gank_io_api_parse (const char *json, GankIoItem **item, unsigned int nItem);
+int _gank_io_api_parse (GankIoItem **item,  const char *json, unsigned int nItem);
 
 #endif /* end of include guard: _GANK_IO_API_H */
