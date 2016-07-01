@@ -27,6 +27,17 @@ void *gank_io_xmalloc (const size_t size)
     }
 }
 
+void *gank_io_xrealloc (void *ptr, const size_t size)
+{
+    void *newBuf = realloc (ptr, size);
+    if ((newBuf != NULL) && (newBuf != ptr)) {
+        return newBuf;
+    } else {
+        fprintf (stderr, " ** libGankIo: FATAL: memory reallocation failed!");
+        abort;
+    }
+}
+
 void gank_io_output (enum GankIoOutputType, char *fmt, ...)
 {
     va_list args;

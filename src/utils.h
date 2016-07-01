@@ -32,6 +32,10 @@ enum GankIoOutputType {
  */
 void *gank_io_xmalloc (const size_t size);
 
+/* gank_io_xrealloc: safe realloc implementation, which kills the program when memory allocation fails.
+ */
+void *gank_io_xrealloc (void *ptr, const size_t size);
+
 /* gank_io_xfree: safe free implementation, which frees the data and sets the pointer to NULL.
  */
 #define gank_io_xfree(ptr) \
