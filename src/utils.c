@@ -19,7 +19,7 @@
 void *gank_io_xmalloc (const size_t size)
 {
     void *ptr = malloc (size);
-    if (size) {
+    if (ptr) {
         return ptr;
     } else {
         fprintf (stderr, " ** libGankIo: FATAL: memory allocation failed!");
