@@ -25,6 +25,7 @@
 #define BUFFER_SIZE 4096
 
 static const char *BaseUrl = "http://gank.io/api";
+static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb, void *userdata);
 
 int _gank_io_api_daily_url_form (char **url, unsigned int year, unsigned int month, unsigned int day)
 {
@@ -107,4 +108,27 @@ int _gank_io_api_get (char **json, const char *url)
 int _gank_io_api_parse (const char *json, GankIoItem **item, unsigned int nItem)
 {
 
+}
+
+
+
+
+
+static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb, void *userdata)
+{
+    // "[ptr] points to the delivered data, and the size of that data is [size] multiplied with [nmemb]."
+    // "Set the [userdata] argument with the CURLOPT_WRITEDATA option."
+    //   -- https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
+
+    void *ptrToWrite = NULL; // Pointer that points to where data should be written into
+    size_t bufUsed = 0;      // Used space of buffer ('userdata')
+
+    bufUsed = strlen (userdata == NULL ? "\0" : userdata);
+
+    // realloc: "If ptr is NULL, the behavior is the same as calling malloc(new_size). "
+    //   -- http://en.cppreference.com/w/c/memory/realloc
+    userdata = gank_io_xrealloc (userdata, bufUsed + size * nmemb);
+    ptrToWrite = userdata + bufUsed;
+
+    return fwrite (ptr, size, nmemb, ptrToWrite);
 }
