@@ -98,7 +98,22 @@ int _gank_io_api_sorted_url_form (char **url, enum GankIoResourceType resType, u
 
 int _gank_io_api_get (char **json, const char *url)
 {
+    CURL *curl = curl_easy_init ();
+    void *buffer = NULL;
 
+    if (curl) {
+        curl_easy_setopt (curl, CURLOPT_URL, url);
+        curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, _gank_io_curl_write_callback);
+        curl_easy_setopt (curl, CURLOPT_WRITEDATA, buffer);
+
+        curl_easy_perform (curl);
+        curl_easy_cleanup (curl);
+    } else {
+        gank_io_error ("%s:%d libcurl initialization failed", __FILE__, __LINE__);
+    }
+
+    *json = buffer;
+    return EXIT_SUCCESS;
 }
 
 
