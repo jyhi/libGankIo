@@ -27,6 +27,10 @@
 static const char *BaseUrl = "http://gank.io/api";
 static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb, void *userdata);
 
+
+
+
+
 int _gank_io_api_daily_url_form (char **url, unsigned int year, unsigned int month, unsigned int day)
 {
     char *buf = gank_io_xmalloc (BUFFER_SIZE);
