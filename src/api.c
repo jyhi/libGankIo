@@ -136,7 +136,7 @@ int _gank_io_api_daily_parse (GankIoItem **item,  const char *json, unsigned int
 
 
 
-int _gank_io_api_sorted_parse (GankIoItem **item,  const char *json, unsigned int nItem)
+int _gank_io_api_sorted_parse (GankIoItem **item, const char *json, unsigned int nItem)
 {
     json_object *jReceived = NULL; // JSON Object for received data ('json')
     json_object *jError    = NULL; // JSON Object for the "error" section
