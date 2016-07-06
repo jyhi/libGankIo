@@ -47,22 +47,17 @@ struct _GankIoItem {
 };
 typedef struct _GankIoItem GankIoItem;
 
+struct _GankIoDailyItem {
+    unsigned int nItem;
+    enum GankIoResourceType type;
+    GankIoItem **item;
+}
+
 /* GankIoDailyFeed: All-in-one daily feed containing several sections of the day
  */
 struct _GankIoDailyFeed {
-    GankIoItem *picToday;
-    GankIoItem *movToday;
-    GankIoItem *android;
-    GankIoItem *iOS;
-    GankIoItem *extendRes;
-    GankIoItem *frontEnd;
-
-    int nPicToday;
-    int nMovToday;
-    int nAndroid;
-    int nIos;
-    int nExtendRes;
-    int nFrontEnd;
+    unsigned int nDailyItem;
+    struct _GankIoDailyItem **dailyItem;
 };
 typedef struct _GankIoDailyFeed GankIoDailyFeed;
 
