@@ -40,7 +40,7 @@ struct _GankIoItem {
     char   *desc;                    // Description of the item
     char   *publishedAt;             // Item publish time
     char   *source;                  // Indicates where the item comes from
-    enum   GankIoResourceType *type; // Resource type of this item
+    enum   GankIoResourceType type;  // Resource type of this item
     char   *url;                     // URL
     int    used;                     // Indicates if it is used (?)
     char   *who;                     // The man who published this item
