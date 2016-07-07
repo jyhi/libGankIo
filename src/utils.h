@@ -52,7 +52,7 @@ void _gank_io_output (const char *file, const char *func, const int line, enum G
 #define gank_io_info(...) gank_io_output (Info, ##__VA_ARGS__)
 #define gank_io_warn_noack(...) gank_io_output (Warn_NoAck, ##__VA_ARGS__)
 #define gank_io_warn_ack(...) gank_io_output (Warn_Ack, ##__VA_ARGS__)
-#define gank_io_warn(...) gank_io_warn_ack (...)
+#define gank_io_warn gank_io_warn_ack
 #define gank_io_error(...) gank_io_output (Error, ##__VA_ARGS__)
 
 #endif /* end of include guard: _GANK_IO_UTILS_H */
