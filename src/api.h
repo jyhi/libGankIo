@@ -41,4 +41,12 @@ int _gank_io_api_daily_parse (GankIoDailyFeed *dailyFeed, const char *json);
  */
 int _gank_io_api_sorted_parse (GankIoItem **item, const char *json, unsigned int nItem);
 
+/* _gank_io_api_restype_tostring: Transform 'enum GankIoResourceType' to string (usually for RESTFul API)
+ */
+char *_gank_io_api_restype_tostring (enum GankIoResourceType resType);
+
+/* _gank_io_api_restype_toenum: Transform a resource type string (usually from RESTFul API) to 'enum GankIoResourceType'
+ */
+enum GankIoResourceType _gank_io_api_restype_toenum (const char *strResType);
+
 #endif /* end of include guard: _GANK_IO_API_H */

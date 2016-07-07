@@ -299,25 +299,7 @@ static int _gank_io_item_single_parse (GankIoItem *item, json_object *obj)
                 break;
             case 't': // "type"
                 strResType = json_object_to_json_string (val);
-                if (strcmp (strResType, "福利") == 0) {
-                    item->type = Goods;
-                } else if (strcmp (strResType, "Android") == 0) {
-                    item->type = Android;
-                } else if (strcmp (strResType, "iOS") == 0) {
-                    item->type = Ios;
-                } else if (strcmp (strResType, "休息视频") == 0) {
-                    item->type = RelaxingMovies;
-                } else if (strcmp (strResType, "拓展资源") == 0) {
-                    item->type = ExtendRes;
-                } else if (strcmp (strResType, "前端") == 0) {
-                    item->type = Frontend;
-                } else if (strcmp (strResType, "all") == 0) {
-                    // ???
-                    item->type = All;
-                } else {
-                    // ?????? Unknown resource type
-                    gank_io_warn ("Unrecognized resource type: %s. Please report this bug to the author.", strResType);
-                }
+                item->type = _gank_io_api_restype_toenum (strResType);
                 break;
             case 'u': // "url" & "used" (collision)
                 if (strcmp (key, "url") == 0) {
@@ -344,4 +326,75 @@ static int _gank_io_item_single_parse (GankIoItem *item, json_object *obj)
     }
 
     return EXIT_SUCCESS;
+}
+
+
+
+
+
+char *_gank_io_api_restype_tostring (enum GankIoResourceType resType)
+{
+    char *strResTypeTmp = gank_io_xmalloc (BUFFER_SIZE);
+
+    switch (resType) {
+        case Goods:
+            strncpy (strResTypeTmp, "福利", BUFFER_SIZE);
+            break;
+        case Android:
+            strncpy (strResTypeTmp, "Android", BUFFER_SIZE);
+            break;
+        case Ios:
+            strncpy (strResTypeTmp, "iOS", BUFFER_SIZE);
+            break;
+        case RelaxingMovies:
+            strncpy (strResTypeTmp, "休息视频", BUFFER_SIZE);
+            break;
+        case ExtendRes:
+            strncpy (strResTypeTmp, "拓展资源", BUFFER_SIZE);
+            break;
+        case Frontend:
+            strncpy (strResTypeTmp, "前端", BUFFER_SIZE);
+            break;
+        case All:
+            strncpy (strResTypeTmp, "all", BUFFER_SIZE);
+            break;
+        default:
+            gank_io_warn ("Unrecognized resource type: %d. Please report this bug to the author.", resType);
+            break;
+    }
+
+    return strResTypeTmp;
+}
+
+
+
+
+
+enum GankIoResourceType _gank_io_api_restype_toenum (const char *strResType)
+{
+    enum GankIoResourceType resTypeTmp;
+
+    // Please refer to the API documents on gank.io (http://gank.io/api) for more information about
+    //   these strings.
+    if (strcmp (strResType, "福利") == 0) {
+        resTypeTmp = Goods;
+    } else if (strcmp (strResType, "Android") == 0) {
+        resTypeTmp = Android;
+    } else if (strcmp (strResType, "iOS") == 0) {
+        resTypeTmp = Ios;
+    } else if (strcmp (strResType, "休息视频") == 0) {
+        resTypeTmp = RelaxingMovies;
+    } else if (strcmp (strResType, "拓展资源") == 0) {
+        resTypeTmp = ExtendRes;
+    } else if (strcmp (strResType, "前端") == 0) {
+        resTypeTmp = Frontend;
+    } else if (strcmp (strResType, "all") == 0) {
+        // ???
+        resTypeTmp = All;
+    } else {
+        // ?????? Unknown resource type
+        gank_io_warn ("Unrecognized resource type: %s. Please report this bug to the author.", strResType);
+    }
+
+    return resTypeTmp;
 }
