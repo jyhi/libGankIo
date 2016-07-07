@@ -28,6 +28,8 @@ enum GankIoResourceType {
     RelaxingMovies,
     ExtendRes,
     Frontend,
+    Recommends,
+    App,
     All,
 };
 
