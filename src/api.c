@@ -254,7 +254,7 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                     item->type = All;
                 } else {
                     // ?????? Unknown resource type
-                    gank_io_warn ("%s:%d Unrecognized resource type: %s. Please report this bug to the author.", __FILE__, __LINE__, strResType);
+                    gank_io_warn ("Unrecognized resource type: %s. Please report this bug to the author.", strResType);
                 }
                 gank_io_xfree (strResType);
                 break;
@@ -278,7 +278,7 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                 break;
             default:
                 // Unrecognized key (May because of API changes)
-                gank_io_warn ("%s:%d Unrecognized key: %s. Please report this bug to the author.", __FILE__, __LINE__, key);
+                gank_io_warn ("Unrecognized key: %s. Please report this bug to the author.", key);
                 break;
         }
         gank_io_xfree (value);
