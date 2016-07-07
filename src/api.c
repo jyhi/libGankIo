@@ -128,7 +128,7 @@ int _gank_io_api_get (char **json, const char *url)
 
 
 
-int _gank_io_api_daily_parse (GankIoItem **item,  const char *json, unsigned int nItem)
+int _gank_io_api_daily_parse (GankIoDailyFeed *dailyFeed,  const char *json, unsigned int nItem)
 {
 
 }
