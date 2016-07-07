@@ -46,7 +46,7 @@ void *gank_io_xrealloc (void *ptr, const size_t size)
 void _gank_io_output (char *file, char *func, int line, enum GankIoOutputType outputType, char *fmt, ...)
 {
     va_list args;
-    static const char *head = " ** libGankIo:";
+    static const char *Head = " ** libGankIo:";
     char yn = 'N';
     va_start (args, fmt);
 
