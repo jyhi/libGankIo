@@ -51,7 +51,7 @@ struct _GankIoDailyItem {
     unsigned int nItem;
     enum GankIoResourceType type;
     GankIoItem **item;
-}
+};
 
 /* GankIoDailyFeed: All-in-one daily feed containing several sections of the day
  */
