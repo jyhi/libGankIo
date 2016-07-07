@@ -16,6 +16,11 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include "utils.h"
+
 void *gank_io_xmalloc (const size_t size)
 {
     void *ptr = malloc (size);
