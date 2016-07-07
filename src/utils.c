@@ -43,24 +43,24 @@ void *gank_io_xrealloc (void *ptr, const size_t size)
     }
 }
 
-void gank_io_output (enum GankIoOutputType, char *fmt, ...)
+void _gank_io_output (char *file, char *func, int line, enum GankIoOutputType outputType, char *fmt, ...)
 {
     va_list args;
     static const char *head = " ** libGankIo:";
     char yn = 'N';
     va_start (args, fmt);
 
-    switch (GankIoOutputType) {
+    switch (outputType) {
         case Info:
-            printf ("%s INFO: ", head);
+            printf ("%s In %s (%s:%s) INFO: ", Head, func, file, line);
             vprintf (fmt, args);
             break;
         case Warn_NoAck:
-            printf ("%s WARN: ", head);
+            printf ("%s In %s (%s:%s) WARN: ", Head, func, file, line);
             vprintf (fmt, args);
             break;
         case Warn_Ack:
-            printf ("%s WARN: ", head);
+            printf ("%s In %s (%s:%s) WARN: ", Head, func, file, line);
             vprintf (fmt, args);
             // Enquire for acknowledge
             while (1) {
@@ -82,8 +82,8 @@ void gank_io_output (enum GankIoOutputType, char *fmt, ...)
             }
             break;
         case Error:
-            fprintf (stderr, "%s FAIL: ", head);
-            vfprintf (args, fmt);
+            fprintf (stderr, "%s In %s (%s:%s) FAIL: ", Head, func, file, line);
+            vfprintf (stderr, fmt, args);
             abort ();
             break;
     }

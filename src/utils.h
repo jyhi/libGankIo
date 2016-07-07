@@ -46,7 +46,8 @@ void *gank_io_xrealloc (void *ptr, const size_t size);
 
 /* gank_io_output: print messages in different types.
  */
-void gank_io_output (enum GankIoOutputType, char *fmt, ...);
+void _gank_io_output (char *file, char *func, int line, enum GankIoOutputType outputType, char *fmt, ...);
+#define gank_io_output(output_type, ...) _gank_io_output (__FILE__, __func__, __LINE__, output_type, ##__VA_ARGS__)
 
 #define gank_io_info(...) gank_io_output (Info, ##__VA_ARGS__)
 #define gank_io_warn_noack(...) gank_io_output (Warn_NoAck, ##__VA_ARGS__)
