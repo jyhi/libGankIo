@@ -147,7 +147,7 @@ int _gank_io_api_sorted_parse (GankIoItem **item, const char *json, unsigned int
     if (jReceived) {
         json_bool bRetVal = 0;
 
-        retVal = json_object_object_get_ex (jReceived, "error", &jError); // Check if request fails
+        bRetVal = json_object_object_get_ex (jReceived, "error", &jError); // Check if request fails
         if ((bRetVal == TRUE) && (strcmp (json_object_to_json_string (jError), "false") == 0)) {
             bRetVal = json_object_object_get_ex (jReceived, "results", &jResults); // Get "results" section
             if ((bRetVal == TRUE) && (json_object_is_type (jResults, json_type_array))) { // NOTE: 'jResults' is an array
