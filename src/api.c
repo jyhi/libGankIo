@@ -44,7 +44,7 @@ int _gank_io_api_daily_url_form (char **url, unsigned int year, unsigned int mon
         return EXIT_SUCCESS;
     } else {
         // Overflowed. (It seems impossible)
-        gank_io_error ("%s:%d String overflowed!", __FILE__, __LINE__);
+        gank_io_error ("tring overflowed!");
     }
 
     // Whatever.
@@ -82,7 +82,7 @@ int _gank_io_api_sorted_url_form (char **url, enum GankIoResourceType resType, u
             break;
         default:
             // WTF
-            gank_io_error ("%s:%d Unexpected: Wrong resType", __FILE__, __LINE__);
+            gank_io_error ("Unexpected: Wrong resType");
             break;
     }
 
@@ -92,7 +92,7 @@ int _gank_io_api_sorted_url_form (char **url, enum GankIoResourceType resType, u
         gank_io_xfree (strResType);
         return EXIT_SUCCESS;
     } else {
-        gank_io_error ("%s:%d String overflowed!", __FILE__, __LINE__);
+        gank_io_error ("String overflowed!");
     }
 
     // Whatever.
@@ -117,7 +117,7 @@ int _gank_io_api_get (char **json, const char *url)
         curl_easy_perform (curl);
         curl_easy_cleanup (curl);
     } else {
-        gank_io_error ("%s:%d libcurl initialization failed", __FILE__, __LINE__);
+        gank_io_error ("libcurl initialization failed");
     }
 
     *json = buffer;
@@ -158,13 +158,13 @@ int _gank_io_api_sorted_parse (GankIoItem **item, const char *json, unsigned int
                     _gank_io_item_single_parse (item[i], json_object_array_get_idx (jResults, i));
                 }
             } else {
-                gank_io_error ("%s:%d Unexpected error: failed to get jResults. Please report this bug to the author.", __FILE__, __LINE__);
+                gank_io_error ("Unexpected error: failed to get jResults. Please report this bug to the author.");
             }
         } else {
-            gank_io_warning ("%s:%d Request failed: received jError == false.", __FILE__, __LINE__);
+            gank_io_warn ("Request failed: received jError == false.");
         }
     } else {
-        gank_io_warning ("%s:%d Cannot parse JSON string. Please report this bug to the author.", __FILE__, __LINE__);
+        gank_io_warn ("Cannot parse JSON string. Please report this bug to the author.");
     }
 
     // Free JSON objects
@@ -254,7 +254,7 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                     item->type = All;
                 } else {
                     // ?????? Unknown resource type
-                    gank_io_warning ("%s:%d Unrecognized resource type: %s. Please report this bug to the author.", __FILE__, __LINE__, strResType);
+                    gank_io_warn ("%s:%d Unrecognized resource type: %s. Please report this bug to the author.", __FILE__, __LINE__, strResType);
                 }
                 gank_io_xfree (strResType);
                 break;
@@ -278,7 +278,7 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                 break;
             default:
                 // Unrecognized key (May because of API changes)
-                gank_io_warning ("%s:%d Unrecognized key: %s. Please report this bug to the author.", __FILE__, __LINE__, key);
+                gank_io_warn ("%s:%d Unrecognized key: %s. Please report this bug to the author.", __FILE__, __LINE__, key);
                 break;
         }
         gank_io_xfree (value);
