@@ -162,7 +162,8 @@ int _gank_io_api_daily_parse (GankIoDailyFeed *dailyFeed, const char *json)
 
                             // Fill in 'GankIoItem's
                             dailyItemTmp[i].nItem = nRsltPtTypeArray;
-                            // TODO: enum GankIoResourceType type; (str to enum)
+                            dailyItemTmp[i].type  = _gank_io_api_restype_toenum (key);
+
                             for (int j = 0; j < nRsltPtTypeArray; j++) { // 'j' is nItem indicator
                                 _gank_io_item_single_parse (&itemTmp[j], json_object_array_get_idx (jRsltPtTypeArray, j));
                             }
