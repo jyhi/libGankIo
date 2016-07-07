@@ -27,6 +27,7 @@
 
 static const char *BaseUrl = "http://gank.io/api";
 static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb, void *userdata);
+static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj);
 
 
 
@@ -154,84 +155,7 @@ int _gank_io_api_sorted_parse (GankIoItem **item, const char *json, unsigned int
                 //   - If nItem > json_object_array_length (jResults) some items will remain NULL;
                 //   - If nItem < json_object_array_length (jResults) JSON will not be fully parsed.
                 for (int i = 0; i < nItem; i++) {
-                    json_object_object_foreach (json_object_array_get_idx (jResults, i), key, val) {
-                        char   *value = json_object_to_json_string (val);
-                        size_t valueSize = strlen (value);
-
-                        // Fill in the specified GankIoItems
-                        switch (key[0]) { // 'key' is of type 'char*'
-                            // NOTE: Tricks to make parsing JSON object faster.
-                            //   Use the first letter of the JSON key first. If
-                            //   there's a collision, use 'strcmp'.
-                            case '_': // "_id"
-                                item[i]->id = gank_io_xmalloc (valueSize);
-                                strncpy (item[i]->id, value, valueSize);
-                                break;
-                            case 'c': // "createdAt"
-                                item[i]->createdAt = gank_io_xmalloc (valueSize);
-                                strncpy (item[i]->id, value, valueSize);
-                                break;
-                            case 'd': // "desc"
-                                item[i]->desc = gank_io_xmalloc (valueSize);
-                                strncpy (item[i]->id, value, valueSize);
-                                break;
-                            case 'p': // "publishedAt"
-                                item[i]->publishedAt = gank_io_xmalloc (valueSize);
-                                strncpy (item[i]->id, value, valueSize);
-                                break;
-                            case 's': // "source"
-                                item[i]->source = gank_io_xmalloc (valueSize);
-                                strncpy (item[i]->id, value, valueSize);
-                                break;
-                            case 't': // "type"
-                                // FIXME: Duplicate codes?
-                                char *strResType = json_object_to_json_string (val);
-                                if (strcmp (strResType, "福利") == 0) {
-                                    item[i]->type = Goods;
-                                } else if (strcmp (strResType, "Android") == 0) {
-                                    item[i]->type = Android;
-                                } else if (strcmp (strResType, "iOS") == 0) {
-                                    item[i]->type = Ios;
-                                } else if (strcmp (strResType, "休息视频") == 0) {
-                                    item[i]->type = RelaxingMovies;
-                                } else if (strcmp (strResType, "拓展资源") == 0) {
-                                    item[i]->type = ExtendRes;
-                                } else if (strcmp (strResType, "前端") == 0) {
-                                    item[i]->type = Frontend;
-                                } else if (strcmp (strResType, "all") == 0) {
-                                    // ???
-                                    item[i]->type = All;
-                                } else {
-                                    // ?????? Unknown resource type
-                                    gank_io_warning ("%s:%d Unrecognized resource type: %s. Please report this bug to the author.", __FILE__, __LINE__, strResType);
-                                }
-                                gank_io_xfree (strResType);
-                                break;
-                            case 'u': // "url" & "used" (collision)
-                                if (strcmp (key, "url") == 0) {
-                                    item[i]->desc = gank_io_xmalloc (valueSize);
-                                    strncpy (item[i]->id, value, valueSize);
-                                } else if (strcmp (key, "used") == 0) {
-                                    char *strUsed = json_object_to_json_string (val);
-                                    if (strcmp (strUsed, "true") == 0) {
-                                        item[i]->used = 1;
-                                    } else {
-                                        item[i]->used = 0;
-                                    }
-                                    gank_io_xfree (strUsed);
-                                } else {}
-                                break;
-                            case 'w': // "who"
-                                item[i]->who = gank_io_xmalloc (valueSize);
-                                strncpy (item[i]->id, value, valueSize);
-                                break;
-                            default:
-                                // Unrecognized key (May because of API changes)
-                                gank_io_warning ("%s:%d Unrecognized key: %s. Please report this bug to the author.", __FILE__, __LINE__, key);
-                                break;
-                        }
-                        gank_io_xfree (value);
-                    }
+                    _gank_io_item_single_parse (item[i], json_object_array_get_idx (jResults, i));
                 }
             } else {
                 gank_io_error ("%s:%d Unexpected error: failed to get jResults. Please report this bug to the author.", __FILE__, __LINE__);
@@ -273,4 +197,90 @@ static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb
     ptrToWrite = userdata + bufUsed;
 
     return fwrite (ptr, size, nmemb, ptrToWrite);
+}
+
+
+
+
+
+static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
+{
+    json_object_object_foreach (obj, key, val) {
+        char   *value = json_object_to_json_string (val);
+        size_t valueSize = strlen (value);
+
+        // Fill in the specified GankIoItems
+        switch (key[0]) { // 'key' is of type 'char*'
+            // NOTE: Tricks to make parsing JSON object faster.
+            //   Use the first letter of the JSON key first. If
+            //   there's a collision, use 'strcmp'.
+            case '_': // "_id"
+                item->id = gank_io_xmalloc (valueSize);
+                strncpy (item->id, value, valueSize);
+                break;
+            case 'c': // "createdAt"
+                item->createdAt = gank_io_xmalloc (valueSize);
+                strncpy (item->id, value, valueSize);
+                break;
+            case 'd': // "desc"
+                item[i]->desc = gank_io_xmalloc (valueSize);
+                strncpy (item->id, value, valueSize);
+                break;
+            case 'p': // "publishedAt"
+                item[i]->publishedAt = gank_io_xmalloc (valueSize);
+                strncpy (item->id, value, valueSize);
+                break;
+            case 's': // "source"
+                item[i]->source = gank_io_xmalloc (valueSize);
+                strncpy (item->id, value, valueSize);
+                break;
+            case 't': // "type"
+                // FIXME: Duplicate codes?
+                char *strResType = json_object_to_json_string (val);
+                if (strcmp (strResType, "福利") == 0) {
+                    item->type = Goods;
+                } else if (strcmp (strResType, "Android") == 0) {
+                    item->type = Android;
+                } else if (strcmp (strResType, "iOS") == 0) {
+                    item->type = Ios;
+                } else if (strcmp (strResType, "休息视频") == 0) {
+                    item->type = RelaxingMovies;
+                } else if (strcmp (strResType, "拓展资源") == 0) {
+                    item->type = ExtendRes;
+                } else if (strcmp (strResType, "前端") == 0) {
+                    item->type = Frontend;
+                } else if (strcmp (strResType, "all") == 0) {
+                    // ???
+                    item->type = All;
+                } else {
+                    // ?????? Unknown resource type
+                    gank_io_warning ("%s:%d Unrecognized resource type: %s. Please report this bug to the author.", __FILE__, __LINE__, strResType);
+                }
+                gank_io_xfree (strResType);
+                break;
+            case 'u': // "url" & "used" (collision)
+                if (strcmp (key, "url") == 0) {
+                    item->desc = gank_io_xmalloc (valueSize);
+                    strncpy (item->id, value, valueSize);
+                } else if (strcmp (key, "used") == 0) {
+                    char *strUsed = json_object_to_json_string (val);
+                    if (strcmp (strUsed, "true") == 0) {
+                        item->used = 1;
+                    } else {
+                        item->used = 0;
+                    }
+                    gank_io_xfree (strUsed);
+                } else {}
+                break;
+            case 'w': // "who"
+                item->who = gank_io_xmalloc (valueSize);
+                strncpy (item->id, value, valueSize);
+                break;
+            default:
+                // Unrecognized key (May because of API changes)
+                gank_io_warning ("%s:%d Unrecognized key: %s. Please report this bug to the author.", __FILE__, __LINE__, key);
+                break;
+        }
+        gank_io_xfree (value);
+    }
 }
