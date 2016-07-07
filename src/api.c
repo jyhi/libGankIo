@@ -224,15 +224,15 @@ static int _gank_io_item_single_parse (GankIoItem *item, json_object *obj)
                 strncpy (item->id, value, valueSize);
                 break;
             case 'd': // "desc"
-                item[i]->desc = gank_io_xmalloc (valueSize);
+                item->desc = gank_io_xmalloc (valueSize);
                 strncpy (item->id, value, valueSize);
                 break;
             case 'p': // "publishedAt"
-                item[i]->publishedAt = gank_io_xmalloc (valueSize);
+                item->publishedAt = gank_io_xmalloc (valueSize);
                 strncpy (item->id, value, valueSize);
                 break;
             case 's': // "source"
-                item[i]->source = gank_io_xmalloc (valueSize);
+                item->source = gank_io_xmalloc (valueSize);
                 strncpy (item->id, value, valueSize);
                 break;
             case 't': // "type"
