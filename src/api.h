@@ -35,7 +35,7 @@ int _gank_io_api_get (char **json, const char *url);
 
 /* _gank_io_api_daily_parse: Parse JSON for daily items to convert it into inner data structures
  */
-int _gank_io_api_daily_parse (GankIoDailyFeed *dailyFeed,  const char *json, unsigned int nItem);
+int _gank_io_api_daily_parse (GankIoDailyFeed *dailyFeed, const char *json);
 
 /* _gank_io_api_sorted_parse: Parse JSON for sorted items to convert it into inner data structures
  */
