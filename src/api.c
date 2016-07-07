@@ -355,6 +355,12 @@ char *_gank_io_api_restype_tostring (enum GankIoResourceType resType)
         case Frontend:
             strncpy (strResTypeTmp, "前端", BUFFER_SIZE);
             break;
+        case Recommends:
+            strncpy (strResTypeTmp, "瞎推荐", BUFFER_SIZE);
+            break;
+        case App:
+            strncpy (strResTypeTmp, "App", BUFFER_SIZE);
+            break;
         case All:
             strncpy (strResTypeTmp, "all", BUFFER_SIZE);
             break;
@@ -388,6 +394,10 @@ enum GankIoResourceType _gank_io_api_restype_toenum (const char *strResType)
         resTypeTmp = ExtendRes;
     } else if (strcmp (strResType, "前端") == 0) {
         resTypeTmp = Frontend;
+    } else if (strcmp (strResType, "瞎推荐") == 0) {
+        resTypeTmp = Recommends;
+    } else if (strcmp (strResType, "App") == 0) {
+        resTypeTmp = App;
     } else if (strcmp (strResType, "all") == 0) {
         // ???
         resTypeTmp = All;
