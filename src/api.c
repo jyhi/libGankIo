@@ -161,7 +161,7 @@ int _gank_io_api_sorted_parse (GankIoItem **item, const char *json, unsigned int
                 gank_io_error ("Unexpected error: failed to get jResults. Please report this bug to the author.");
             }
         } else {
-            gank_io_warn ("Request failed: received jError == false.");
+            gank_io_warn ("Tainted JSON data: either \"error\"==\"true\" or cannot to get jError");
         }
     } else {
         gank_io_warn ("Cannot parse JSON string. Please report this bug to the author.");
