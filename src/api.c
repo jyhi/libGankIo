@@ -27,7 +27,7 @@
 
 static const char *BaseUrl = "http://gank.io/api";
 static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb, void *userdata);
-static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj);
+static int _gank_io_item_single_parse (GankIoItem *item, json_object *obj);
 
 
 
@@ -203,11 +203,12 @@ static size_t _gank_io_curl_write_callback (char *ptr, size_t size, size_t nmemb
 
 
 
-static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
+static int _gank_io_item_single_parse (GankIoItem *item, json_object *obj)
 {
     json_object_object_foreach (obj, key, val) {
-        char   *value = json_object_to_json_string (val);
-        size_t valueSize = strlen (value);
+        const char *value = json_object_to_json_string (val);
+        const char *strResType = NULL;
+        size_t     valueSize = strlen (value);
 
         // Fill in the specified GankIoItems
         switch (key[0]) { // 'key' is of type 'char*'
@@ -235,8 +236,7 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                 strncpy (item->id, value, valueSize);
                 break;
             case 't': // "type"
-                // FIXME: Duplicate codes?
-                char *strResType = json_object_to_json_string (val);
+                strResType = json_object_to_json_string (val);
                 if (strcmp (strResType, "福利") == 0) {
                     item->type = Goods;
                 } else if (strcmp (strResType, "Android") == 0) {
@@ -256,20 +256,18 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                     // ?????? Unknown resource type
                     gank_io_warn ("Unrecognized resource type: %s. Please report this bug to the author.", strResType);
                 }
-                gank_io_xfree (strResType);
                 break;
             case 'u': // "url" & "used" (collision)
                 if (strcmp (key, "url") == 0) {
                     item->desc = gank_io_xmalloc (valueSize);
                     strncpy (item->id, value, valueSize);
                 } else if (strcmp (key, "used") == 0) {
-                    char *strUsed = json_object_to_json_string (val);
+                    const char *strUsed = json_object_to_json_string (val);
                     if (strcmp (strUsed, "true") == 0) {
                         item->used = 1;
                     } else {
                         item->used = 0;
                     }
-                    gank_io_xfree (strUsed);
                 } else {}
                 break;
             case 'w': // "who"
@@ -281,6 +279,5 @@ static int _gank_io_item_single_parse (GankIoItem *item, const json_object *obj)
                 gank_io_warn ("Unrecognized key: %s. Please report this bug to the author.", key);
                 break;
         }
-        gank_io_xfree (value);
     }
 }
