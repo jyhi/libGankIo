@@ -342,4 +342,6 @@ static int _gank_io_item_single_parse (GankIoItem *item, json_object *obj)
                 break;
         }
     }
+
+    return EXIT_SUCCESS;
 }
