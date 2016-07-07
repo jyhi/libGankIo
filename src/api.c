@@ -130,7 +130,69 @@ int _gank_io_api_get (char **json, const char *url)
 
 int _gank_io_api_daily_parse (GankIoDailyFeed *dailyFeed, const char *json)
 {
+    json_object *jReceived            = NULL;
+    json_object *jError               = NULL;
+    json_object *jCategory            = NULL;
+    json_object *jResults             = NULL;
+    json_object *jRsltPtTypeArray     = NULL;
+    GankIoDailyFeed *dailyFeedTmp     = gank_io_xmalloc (sizeof (GankIoDailyFeed)); // Temporary 'GankIoDailyFeed'
 
+    jReceived = json_tokener_parse (json);
+    if (jReceived) {
+        json_bool bRetVal = 0;
+
+        bRetVal = json_object_object_get_ex (jReceived, "error", &jError);
+        if ((bRetVal == TRUE) && (strcmp (json_object_to_json_string (jError), "false") == 0)) {
+            bRetVal = json_object_object_get_ex (jReceived, "category", &jCategory);
+            if ((bRetVal == TRUE) && json_object_is_type (jCategory, json_type_array)) {
+                // Count the number of catrgories , declare '_GankIoDailyItem's, and set 'nDailyItem'
+                unsigned int nCategory = json_object_array_length (jCategory);
+                struct _GankIoDailyItem *dailyItemTmp = gank_io_xmalloc (sizeof (struct _GankIoDailyItem) * nCategory);
+
+                dailyFeedTmp->nDailyItem = nCategory;
+
+                bRetVal = json_object_object_get_ex (jReceived, "results", &jResults);
+                if (bRetVal == TRUE) {
+                    unsigned int i = 0; // nDailyItem indicator
+                    json_object_object_foreach (jResults, key, val) {
+                        bRetVal = json_object_object_get_ex (jResults, key, &jRsltPtTypeArray);
+                        if ((bRetVal == TRUE) && json_object_is_type (jRsltPtTypeArray, json_type_array)) {
+                            unsigned int nRsltPtTypeArray = json_object_array_length (jRsltPtTypeArray);
+                            GankIoItem *itemTmp = gank_io_xmalloc (sizeof (GankIoItem) * nRsltPtTypeArray);
+
+                            // Fill in 'GankIoItem's
+                            dailyItemTmp[i].nItem = nRsltPtTypeArray;
+                            // TODO: enum GankIoResourceType type; (str to enum)
+                            for (int j = 0; j < nRsltPtTypeArray; j++) { // 'j' is nItem indicator
+                                _gank_io_item_single_parse (&itemTmp[j], json_object_array_get_idx (jRsltPtTypeArray, j));
+                            }
+                            dailyItemTmp[i].item = &itemTmp; // Connect temporary 'GankIoItem' pointer to the upper one
+
+                        } else {
+                            gank_io_error ("Unexpected error: Cannot get jRsltPtTypeArray.");
+                        }
+
+                        i += 1; // Plus 1 to add the current position of dailyItemTmp
+                    } // json_object_object_foreach (jResults, key, val)
+                } else {
+                    gank_io_error ("Unexpected error: Cannot get jResults.");
+                }
+
+                // Connect temporary 'struct _GankIoDailyItem' to the upper one
+                dailyFeedTmp->dailyItem = &dailyItemTmp;
+
+            } else {
+                gank_io_error ("Unexpected error: Cannot get jCategory.");
+            }
+        } else {
+            gank_io_warn ("Tainted JSON data: either \"error\"==\"true\" or cannot to get jError");
+        }
+    } else {
+        gank_io_warn ("Cannot parse JSON string. Please report this bug to the author.");
+    }
+
+    dailyFeed = dailyFeedTmp;
+    return EXIT_SUCCESS;
 }
 
 
