@@ -31,10 +31,10 @@ int gank_io_item_info_fetch (GankIoItem **items, enum GankIoResourceType resType
 
     retVal = _gank_io_api_sorted_url_form (&url, resType, nItem, nPage);
     if (retVal == EXIT_SUCCESS) {
-        if (retVal = EXIT_SUCCESS) {
         retVal = _gank_io_api_get (&json, url);
+        if (retVal == EXIT_SUCCESS) {
             retVal = _gank_io_api_sorted_parse (&itemsTmp, json, nItem);
-            if (retVal = EXIT_SUCCESS) {
+            if (retVal == EXIT_SUCCESS) {
                 *items = itemsTmp;
             } else {
                 gank_io_warn ("JSON parsing error.");
