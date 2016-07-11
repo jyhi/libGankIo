@@ -55,7 +55,7 @@ int gank_io_item_info_fetch (GankIoItem **items, enum GankIoResourceType resType
 
 int gank_io_item_content_fetch (GankIoItem *item)
 {
-
+    return EXIT_SUCCESS;
 }
 
 
