@@ -62,5 +62,15 @@ int gank_io_item_content_fetch (GankIoItem *item)
 
 int gank_io_item_free (GankIoItem *item)
 {
-
+    gank_io_xfree (item->id);
+    gank_io_xfree (item->createdAt);
+    gank_io_xfree (item->desc);
+    gank_io_xfree (item->publishedAt);
+    gank_io_xfree (item->source);
+    gank_io_xfree (item->url);
+    gank_io_xfree (item->who);
+    gank_io_xfree (item->content);
+    item->type = Unknown;
+    item->used = 0;
+    return EXIT_SUCCESS;
 }
