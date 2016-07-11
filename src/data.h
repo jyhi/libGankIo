@@ -46,6 +46,7 @@ struct _GankIoItem {
     char   *url;                     // URL
     int    used;                     // Indicates if it is used (?)
     char   *who;                     // The man who published this item
+    void   *content                  // Pointer to content
 };
 typedef struct _GankIoItem GankIoItem;
 
