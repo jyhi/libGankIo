@@ -22,7 +22,7 @@
 /* gank_io_item_info_fetch: Fetch items of specific numbers, and write information into the specific 'GankIoItem' items.
  * NOTE: Unlike gank_io_item_content_fetch, this function only fetches summaries.
  */
-int gank_io_item_info_fetch (GankIoItem **items, GankIoResourceType resType, unsigned int nItem, unsigned int nPage);
+int gank_io_item_info_fetch (GankIoItem **items, enum GankIoResourceType resType, unsigned int nItem, unsigned int nPage);
 
 /* gank_io_item_content_fetch: Fetch the content of the specific item, which contains information fetched by
  *   gank_io_item_info_fetch.

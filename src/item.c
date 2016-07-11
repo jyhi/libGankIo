@@ -20,7 +20,7 @@
 #include "api.h"
 #include "utils.h"
 
-int gank_io_item_info_fetch (GankIoItem **items, GankIoResourceType resType, unsigned int nItem, unsigned int nPage)
+int gank_io_item_info_fetch (GankIoItem **items, enum GankIoResourceType resType, unsigned int nItem, unsigned int nPage)
 {
     GankIoItem *itemsTmp = (GankIoItem *)gank_io_xmalloc (sizeof (GankIoItem) * nItem);
     int retVal = 0;
