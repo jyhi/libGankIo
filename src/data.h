@@ -22,6 +22,7 @@
 /* GankIoResourceType: Indicates the resource type of the item.
  */
 enum GankIoResourceType {
+    Unknown,
     Goods,          // 福利
     Android,
     Ios,
