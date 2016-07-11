@@ -16,7 +16,7 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-int gank_io_item_info_fetch (GankIoItem **items, const unsigned int nItem)
+int gank_io_item_info_fetch (GankIoItem **items, GankIoResourceType resType, unsigned int nItem)
 {
 
 }
