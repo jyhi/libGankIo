@@ -16,9 +16,35 @@
  * License along with libGankIo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+#include "api.h"
+#include "utils.h"
+
 int gank_io_item_info_fetch (GankIoItem **items, GankIoResourceType resType, unsigned int nItem, unsigned int nPage)
 {
+    GankIoItem *itemsTmp = (GankIoItem *)gank_io_xmalloc (sizeof (GankIoItem) * nItem);
+    int retVal = 0;
+    char *url  = NULL;
+    char *json = NULL;
 
+    retVal = _gank_io_api_sorted_url_form (url, nItem, nPage);
+    if (retVal == EXIT_SUCCESS) {
+        retVal = _gank_io_api_get (json, url);
+        if (retVal = EXIT_SUCCESS) {
+            retVal = _gank_io_api_sorted_parse (&itemsTmp, json, nItem);
+            if (retVal = EXIT_SUCCESS) {
+                *items = itemsTmp;
+            } else {
+                gank_io_warn ("JSON parsing error.");
+            }
+        } else {
+            gank_io_warn ("Failed to fetch data information!");
+        }
+    } else {
+        gank_io_warn ("Unexpected error: URL forming error.");
+    }
+
+    return EXIT_SUCCESS;
 }
 
 
