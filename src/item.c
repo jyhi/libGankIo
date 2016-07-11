@@ -29,10 +29,10 @@ int gank_io_item_info_fetch (GankIoItem **items, enum GankIoResourceType resType
     char *url  = NULL;
     char *json = NULL;
 
-    retVal = _gank_io_api_sorted_url_form (url, nItem, nPage);
+    retVal = _gank_io_api_sorted_url_form (&url, resType, nItem, nPage);
     if (retVal == EXIT_SUCCESS) {
-        retVal = _gank_io_api_get (json, url);
         if (retVal = EXIT_SUCCESS) {
+        retVal = _gank_io_api_get (&json, url);
             retVal = _gank_io_api_sorted_parse (&itemsTmp, json, nItem);
             if (retVal = EXIT_SUCCESS) {
                 *items = itemsTmp;
